@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pimpinan;
+use App\models\Pendaftar;
 use App\models\Testimoni;
 use App\Models\KontenHero;
 use App\Models\KontenProfil;
@@ -172,7 +173,26 @@ if (Testimoni::count() === 0) {
 
     public function prosesPendaftaran(Request $request)
     {
-        
-        dd($request->all());
+       
+        $validatedData = $request->validate([
+            'nama_mahasiswa' => 'required|string|max:255',
+            'email' => 'required|email|unique:pendaftars,email',
+            'nik_ktp' => 'required|string|unique:pendaftars,nik_ktp',
+            'hp' => 'required|string',
+            
+        ]);
+
+        $data = $request->except('_token'); 
+        $filesToUpload = ['file_ijazah', 'file_ktp', 'file_kk', 'file_pas_foto', 'file_khs'];
+        foreach ($filesToUpload as $file) {
+            if ($request->hasFile($file)) {
+                $path = $request->file($file)->store('pendaftar_files', 'public');
+                $data[$file] = $path;
+            }
+        }
+
+        Pendaftar::create($data);
+
+        return redirect()->route('home')->with('pendaftaran_sukses', 'Pendaftaran Anda telah berhasil dikirim!');
     }
 }

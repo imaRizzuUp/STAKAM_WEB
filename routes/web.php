@@ -42,6 +42,11 @@ Route::middleware('auth')->group(function () {
     Route::put('/dashboard/testimoni/{testimoni}', [DashboardController::class, 'updateTestimoni'])->name('dashboard.testimoni.update');
     Route::delete('/dashboard/testimoni/{testimoni}', [DashboardController::class, 'destroyTestimoni'])->name('dashboard.testimoni.destroy');
 
+    Route::get('/dashboard/pendaftar', [DashboardController::class, 'pendaftar'])->name('dashboard.pendaftar');
+    Route::get('/dashboard/pendaftar/{pendaftar}', [DashboardController::class, 'detailPendaftar'])->name('dashboard.pendaftar.detail'); // Untuk detail AJAX
+    Route::patch('/dashboard/pendaftar/{pendaftar}/status', [DashboardController::class, 'updateStatusPendaftar'])->name('dashboard.pendaftar.updateStatus');
+    Route::delete('/dashboard/pendaftar/{pendaftar}', [DashboardController::class, 'destroyPendaftar'])->name('dashboard.pendaftar.destroy');
+
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 });

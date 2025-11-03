@@ -26,7 +26,6 @@
                 <span>Dashboard</span>
             </div>
             
-           
             <ul class="nav flex-column mt-4">
                 <li class="nav-item"><a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}"><i class="bi bi-house-door-fill"></i>Dashboard</a></li>
                 <li class="nav-item"><a class="nav-link {{ request()->routeIs('dashboard.kontenHero') ? 'active' : '' }}" href="{{ route('dashboard.kontenHero') }}"><i class="bi bi-window-desktop"></i>Konten Hero</a></li>
@@ -34,6 +33,12 @@
                 <li class="nav-item"><a class="nav-link {{ request()->routeIs('dashboard.programStudi') ? 'active' : '' }}" href="{{ route('dashboard.programStudi') }}"><i class="bi bi-mortarboard-fill"></i>Program Studi</a></li>
                 <li class="nav-item"><a class="nav-link {{ request()->routeIs('dashboard.pimpinan') ? 'active' : '' }}" href="{{ route('dashboard.pimpinan') }}"><i class="bi bi-person-workspace"></i>Pimpinan</a></li>
                 <li class="nav-item"><a class="nav-link {{ request()->routeIs('dashboard.testimoni') ? 'active' : '' }}" href="{{ route('dashboard.testimoni') }}"><i class="bi bi-chat-quote-fill"></i>Testimoni</a></li>
+
+                
+                <hr class="my-3 mx-3">
+
+                <li class="nav-item"><a class="nav-link {{ request()->routeIs('dashboard.pendaftar') ? 'active' : '' }}" href="{{ route('dashboard.pendaftar') }}"><i class="bi bi-card-checklist"></i>Pendaftar</a></li>
+               
             </ul>
         </div>
     </nav>
@@ -45,8 +50,6 @@
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body p-2">
-            
-           
             <ul class="nav flex-column">
                 <li class="nav-item"><a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}"><i class="bi bi-house-door-fill"></i>Dashboard</a></li>
                 <li class="nav-item"><a class="nav-link {{ request()->routeIs('dashboard.kontenHero') ? 'active' : '' }}" href="{{ route('dashboard.kontenHero') }}"><i class="bi bi-window-desktop"></i>Konten Hero</a></li>
@@ -54,10 +57,17 @@
                 <li class="nav-item"><a class="nav-link {{ request()->routeIs('dashboard.programStudi') ? 'active' : '' }}" href="{{ route('dashboard.programStudi') }}"><i class="bi bi-mortarboard-fill"></i>Program Studi</a></li>
                 <li class="nav-item"><a class="nav-link {{ request()->routeIs('dashboard.pimpinan') ? 'active' : '' }}" href="{{ route('dashboard.pimpinan') }}"><i class="bi bi-person-workspace"></i>Pimpinan</a></li>
                 <li class="nav-item"><a class="nav-link {{ request()->routeIs('dashboard.testimoni') ? 'active' : '' }}" href="{{ route('dashboard.testimoni') }}"><i class="bi bi-chat-quote-fill"></i>Testimoni</a></li>
+
+            
+                <hr class="my-2 mx-3">
+
+                <li class="nav-item"><a class="nav-link {{ request()->routeIs('dashboard.pendaftar') ? 'active' : '' }}" href="{{ route('dashboard.pendaftar') }}"><i class="bi bi-card-checklist"></i>Manajemen Pendaftar</a></li>
+              
             </ul>
         </div>
     </div>
 
+    {{-- ... (Sisa kode tidak ada perubahan) ... --}}
     <div class="main-content-wrapper">
         <header class="top-navbar p-3 solid-white-bg">
             <div class="container-fluid d-flex align-items-center justify-content-between">
@@ -83,8 +93,6 @@
                                 </div>
                             </li>
                             <li><hr class="dropdown-divider my-1"></li>
-                            
-                            
                             <li><a class="dropdown-item text-danger fw-medium d-flex align-items-center" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="bi bi-box-arrow-left me-2"></i>Logout</a></li>
                         </ul>
                     </div>

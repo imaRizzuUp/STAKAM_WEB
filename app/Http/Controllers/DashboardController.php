@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pimpinan;
+use App\models\Pendaftar;
 use App\models\Testimoni;
 use App\Models\KontenHero;
 use App\Models\KontenProfil;
@@ -18,22 +19,26 @@ class DashboardController extends Controller
         $jumlahProdi = ProgramStudi::count();
         $jumlahPimpinan = Pimpinan::count();
         $jumlahTestimoni = Testimoni::count();
+        $jumlahPendaftar = Pendaftar::count();
+
+        $pendaftarTerbaru = Pendaftar::latest()->take(5)->get();
       
         $stats = [
             'prodi' => $jumlahProdi,
             'pimpinan' => $jumlahPimpinan,
             'testimoni' => $jumlahTestimoni,
-           
+            'pendaftar' => $jumlahPendaftar,
         ];
         
        
         return view('dashboard.index', [
             'title' => 'Dashboard Admin',
-            'stats' => $stats
+            'stats' => $stats,
+            'pendaftarTerbaru' => $pendaftarTerbaru,
         ]);
     }
 
-    // konten hero
+
     public function KontenHero() {
         $konten = KontenHero::firstOrCreate(
             ['id' => 1],
@@ -283,5 +288,48 @@ class DashboardController extends Controller
     {
         $testimoni->delete();
         return back()->with('success', 'Testimoni berhasil dihapus!');
+    }
+
+
+    // pendaftar
+    public function pendaftar(Request $request)
+    {
+        $query = Pendaftar::latest(); 
+
+       
+        if ($request->has('status') && $request->status != '') {
+            $query->where('status', $request->status);
+        }
+
+        return view('dashboard.pendaftar', [
+            'title' => 'Manajemen Pendaftar',
+            'pendaftars' => $query->paginate(10), 
+        ]);
+    }
+
+    public function detailPendaftar(Pendaftar $pendaftar)
+    {
+       
+        return response()->json($pendaftar);
+    }
+
+    public function updateStatusPendaftar(Request $request, Pendaftar $pendaftar)
+    {
+        $request->validate(['status' => 'required|string']);
+        $pendaftar->update(['status' => $request->status]);
+        return back()->with('success', 'Status pendaftar berhasil diubah!');
+    }
+
+    public function destroyPendaftar(Pendaftar $pendaftar)
+    {
+        
+        $filesToDelete = ['file_ijazah', 'file_ktp', 'file_kk', 'file_pas_foto', 'file_khs'];
+        foreach ($filesToDelete as $file) {
+            if ($pendaftar->$file) {
+                Storage::delete('public/' . $pendaftar->$file);
+            }
+        }
+        $pendaftar->delete();
+        return back()->with('success', 'Data pendaftar berhasil dihapus!');
     }
 }
