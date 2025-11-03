@@ -39,6 +39,18 @@
 <body>
 
     <div class="container my-5">
+        @if(session('success'))
+            <div class="alert alert-success text-center">
+                <h4 class="alert-heading">Pendaftaran Berhasil!</h4>
+                <p>{{ session('success') }}</p>
+                <hr>
+                <p class="mb-0">Anda bisa menutup halaman ini atau <a href="{{ route('home') }}" class="alert-link">kembali ke beranda</a>.</p>
+            </div>
+        @endif
+        
+    <div class="form-header text-center">
+
+    <div class="container my-5">
         <div class="form-header text-center">
             <img src="{{ asset('picture/logo/STAKAM_Logo.png') }}" alt="Logo STAKAM" class="mb-3">
             <h1 class="h3 fw-bold">SEKOLAH TINGGI AGAMA KRISTEN APOLLOS MANADO (STAKAM)</h1>

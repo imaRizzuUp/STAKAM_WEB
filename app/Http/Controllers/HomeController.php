@@ -171,28 +171,37 @@ if (Testimoni::count() === 0) {
     }
 
 
-    public function prosesPendaftaran(Request $request)
+  public function prosesPendaftaran(Request $request)
     {
-       
+        
         $validatedData = $request->validate([
             'nama_mahasiswa' => 'required|string|max:255',
             'email' => 'required|email|unique:pendaftars,email',
-            'nik_ktp' => 'required|string|unique:pendaftars,nik_ktp',
-            'hp' => 'required|string',
-            
+            'nik_ktp' => 'required|string|max:20|unique:pendaftars,nik_ktp',
+            'hp' => 'required|string|max:15',
+            'file_ijazah' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'file_ktp' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'file_kk' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'file_pas_foto' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'file_khs' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
         ]);
 
-        $data = $request->except('_token'); 
+       
+        $dataToCreate = $request->except(['_token', 'file_ijazah', 'file_ktp', 'file_kk', 'file_pas_foto', 'file_khs']);
+
+      
         $filesToUpload = ['file_ijazah', 'file_ktp', 'file_kk', 'file_pas_foto', 'file_khs'];
         foreach ($filesToUpload as $file) {
             if ($request->hasFile($file)) {
                 $path = $request->file($file)->store('pendaftar_files', 'public');
-                $data[$file] = $path;
+               
+                $dataToCreate[$file] = $path;
             }
         }
 
-        Pendaftar::create($data);
+       
+        Pendaftar::create($dataToCreate);
 
-        return redirect()->route('home')->with('pendaftaran_sukses', 'Pendaftaran Anda telah berhasil dikirim!');
+        return redirect()->route('pendaftaran.form')->with('success', 'Pendaftaran Anda telah berhasil dikirim! Nomor pendaftaran akan diberikan setelah verifikasi oleh admin.');
     }
 }

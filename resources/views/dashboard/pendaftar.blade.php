@@ -34,6 +34,7 @@
                 <table class="table table-hover align-middle">
                     <thead class="table-light">
                         <tr>
+                            <th>Nomor</th> 
                             <th>Nama Mahasiswa</th>
                             <th>Program Studi</th>
                             <th>Tanggal Daftar</th>
@@ -44,6 +45,7 @@
                     <tbody>
                         @forelse($pendaftars as $pendaftar)
                         <tr>
+                            <td class="fw-medium">{{ $pendaftar->nomor_pendaftaran }}</td>
                             <td>
                                 <div class="fw-bold">{{ $pendaftar->nama_mahasiswa }}</div>
                                 <small class="text-secondary">{{ $pendaftar->email }}</small>
@@ -68,7 +70,7 @@
                             </td>
                         </tr>
                         @empty
-                        <tr><td colspan="5" class="text-center text-secondary py-4">Tidak ada data pendaftar.</td></tr>
+                        <tr><td colspan="6" class="text-center text-secondary py-4">Tidak ada data pendaftar.</td></tr>
                         @endforelse
                     </tbody>
                 </table>
