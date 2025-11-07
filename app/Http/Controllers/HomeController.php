@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pimpinan;
-use App\models\Pendaftar;
-use App\models\Testimoni;
+use App\Models\Pendaftar;
+use App\Models\Testimoni;
 use App\Models\KontenHero;
 use App\Models\KontenProfil;
 use App\Models\ProgramStudi;
@@ -14,14 +14,14 @@ class HomeController extends Controller
 {
     public function index()
     {
-        
+
         $hero = KontenHero::firstOrCreate(
             ['id' => 1],
             [
                 'judul_utama' => 'Membentuk Hamba Tuhan & Pemimpin Kristen Unggul',
                 'deskripsi' => 'Menjadi terang dan garam dunia melalui pendidikan teologi yang Alkitabiah, relevan, dan transformatif di STAKAM Apollos Manado.',
-                'gambar_utama' => null, 
-                'gambar_latar' => null,  
+                'gambar_utama' => null,
+                'gambar_latar' => null,
             ]
         );
 
@@ -41,7 +41,7 @@ class HomeController extends Controller
             ]
         );
 
-        
+
          if (ProgramStudi::count() === 0) {
             ProgramStudi::insert([
                 [
@@ -86,12 +86,12 @@ class HomeController extends Controller
                 ],
             ]);
         }
-        
-        
+
+
         $programStudi = ProgramStudi::all();
 
 
-        
+
         if (Pimpinan::count() === 0) {
             Pimpinan::insert([
                 [
@@ -124,10 +124,10 @@ class HomeController extends Controller
                 ],
             ]);
         }
-        
+
 
     $pimpinan = Pimpinan::all();
-    
+
 
 if (Testimoni::count() === 0) {
         Testimoni::insert([
@@ -153,12 +153,12 @@ if (Testimoni::count() === 0) {
     }
     $testimonis = Testimoni::all();
 
-    return view('welcome', [ 
+    return view('welcome', [
         'hero' => $hero,
         'profil' => $profil,
         'programStudi' => $programStudi,
         'pimpinan' => $pimpinan,
-        'testimonis' => $testimonis, 
+        'testimonis' => $testimonis,
     ]);
 
     }
@@ -173,7 +173,7 @@ if (Testimoni::count() === 0) {
 
   public function prosesPendaftaran(Request $request)
     {
-        
+
         $validatedData = $request->validate([
             'nama_mahasiswa' => 'required|string|max:255',
             'email' => 'required|email|unique:pendaftars,email',
@@ -186,20 +186,20 @@ if (Testimoni::count() === 0) {
             'file_khs' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
         ]);
 
-       
+
         $dataToCreate = $request->except(['_token', 'file_ijazah', 'file_ktp', 'file_kk', 'file_pas_foto', 'file_khs']);
 
-      
+
         $filesToUpload = ['file_ijazah', 'file_ktp', 'file_kk', 'file_pas_foto', 'file_khs'];
         foreach ($filesToUpload as $file) {
             if ($request->hasFile($file)) {
                 $path = $request->file($file)->store('pendaftar_files', 'public');
-               
+
                 $dataToCreate[$file] = $path;
             }
         }
 
-       
+
         Pendaftar::create($dataToCreate);
 
         return redirect()->route('pendaftaran.form')->with('success', 'Pendaftaran Anda telah berhasil dikirim! Nomor pendaftaran akan diberikan setelah verifikasi oleh admin.');

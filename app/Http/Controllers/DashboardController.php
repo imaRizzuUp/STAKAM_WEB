@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pimpinan;
-use App\models\Pendaftar;
-use App\models\Testimoni;
+use App\Models\Pendaftar;
+use App\Models\Testimoni;
 use App\Models\KontenHero;
 use App\Models\KontenProfil;
 use App\Models\ProgramStudi;
@@ -15,22 +15,22 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        
+
         $jumlahProdi = ProgramStudi::count();
         $jumlahPimpinan = Pimpinan::count();
         $jumlahTestimoni = Testimoni::count();
         $jumlahPendaftar = Pendaftar::count();
 
         $pendaftarTerbaru = Pendaftar::latest()->take(5)->get();
-      
+
         $stats = [
             'prodi' => $jumlahProdi,
             'pimpinan' => $jumlahPimpinan,
             'testimoni' => $jumlahTestimoni,
             'pendaftar' => $jumlahPendaftar,
         ];
-        
-       
+
+
         return view('dashboard.index', [
             'title' => 'Dashboard Admin',
             'stats' => $stats,
@@ -56,7 +56,7 @@ class DashboardController extends Controller
 
     public function updateKontenHero(Request $request)
     {
-       
+
         $validatedData = $request->validate([
             'judul_utama' => 'required|string|max:255',
             'deskripsi' => 'required|string',
@@ -64,24 +64,24 @@ class DashboardController extends Controller
             'gambar_latar' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ]);
 
-       
+
         $konten = KontenHero::find(1);
 
         $konten->judul_utama = $validatedData['judul_utama'];
         $konten->deskripsi = $validatedData['deskripsi'];
 
-       
+
         if ($request->hasFile('gambar_utama')) {
-            
+
             if ($konten->gambar_utama) {
                 Storage::delete('public/' . $konten->gambar_utama);
             }
-           
+
             $path = $request->file('gambar_utama')->store('hero', 'public');
             $konten->gambar_utama = $path;
         }
-        
-       
+
+
         if ($request->hasFile('gambar_latar')) {
             if ($konten->gambar_latar) {
                 Storage::delete('public/' . $konten->gambar_latar);
@@ -95,7 +95,7 @@ class DashboardController extends Controller
         return back()->with('success', 'Konten hero berhasil diperbarui!');
     }
 
-    
+
     // konten profil
     public function kontenProfil()
     {
@@ -242,7 +242,7 @@ class DashboardController extends Controller
         if ($pimpinan->foto) {
             Storage::delete('public/' . $pimpinan->foto);
         }
-        
+
         $pimpinan->delete();
         return back()->with('success', 'Data pimpinan berhasil dihapus!');
     }
@@ -257,7 +257,7 @@ class DashboardController extends Controller
         ]);
     }
 
-   
+
     public function storeTestimoni(Request $request)
     {
         $validatedData = $request->validate([
@@ -270,7 +270,7 @@ class DashboardController extends Controller
         return back()->with('success', 'Testimoni baru berhasil ditambahkan!');
     }
 
-   
+
     public function updateTestimoni(Request $request, Testimoni $testimoni)
     {
         $validatedData = $request->validate([
@@ -283,7 +283,7 @@ class DashboardController extends Controller
         return back()->with('success', 'Testimoni berhasil diperbarui!');
     }
 
-   
+
     public function destroyTestimoni(Testimoni $testimoni)
     {
         $testimoni->delete();
@@ -294,22 +294,22 @@ class DashboardController extends Controller
     // pendaftar
     public function pendaftar(Request $request)
     {
-        $query = Pendaftar::latest(); 
+        $query = Pendaftar::latest();
 
-       
+
         if ($request->has('status') && $request->status != '') {
             $query->where('status', $request->status);
         }
 
         return view('dashboard.pendaftar', [
             'title' => 'Manajemen Pendaftar',
-            'pendaftars' => $query->paginate(10), 
+            'pendaftars' => $query->paginate(10),
         ]);
     }
 
     public function detailPendaftar(Pendaftar $pendaftar)
     {
-       
+
         return response()->json($pendaftar);
     }
 
@@ -322,7 +322,7 @@ class DashboardController extends Controller
 
     public function destroyPendaftar(Pendaftar $pendaftar)
     {
-        
+
         $filesToDelete = ['file_ijazah', 'file_ktp', 'file_kk', 'file_pas_foto', 'file_khs'];
         foreach ($filesToDelete as $file) {
             if ($pendaftar->$file) {

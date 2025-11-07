@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\models\Pendaftar;
+use App\Models\Pendaftar;
 use App\Observers\PendaftarObserver;
 use Illuminate\Support\ServiceProvider;
 

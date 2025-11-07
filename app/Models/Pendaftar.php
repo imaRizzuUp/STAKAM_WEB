@@ -1,6 +1,6 @@
 <?php
 
-namespace App\models;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -11,5 +11,5 @@ class Pendaftar extends Model
 
     protected $table = 'pendaftars';
 
-    protected $guarded = []; 
+    protected $guarded = [];
 }
