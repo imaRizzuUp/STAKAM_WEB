@@ -1,0 +1,73 @@
+name: Build and Deploy PTIK Web to cPanel via FTP
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    name: Build & Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: 1. Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 2. Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          extensions: mbstring, dom, fileinfo, mysql, curl, zip
+          tools: composer:v2
+        env:
+          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 3. Install Composer Dependencies
+        run: composer install --prefer-dist --no-progress --no-dev --optimize-autoloader
+
+      - name: 4. Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: 5. Install NPM Dependencies
+        run: npm install
+
+      - name: 6. Build Frontend Assets
+        run: npm run build
+
+      - name: 7. Create deployment structure
+        run: |
+          mkdir -p deploy-temp/public-files
+          rsync -av --exclude='index.php' public/ deploy-temp/public-files/
+
+      - name: 8. Deploy Laravel files to repositories folder
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: ${{ secrets.FTP_SERVER_DIR }}
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            **/vendor/**
+            .github/**
+            README.md
+            .styleci.yml
+            phpunit.xml
+            .env.example
+            .env.testing
+
+      - name: 9. Deploy public files to public_html
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: deploy-temp/public-files/
+          server-dir: ${{ secrets.FTP_PUBLIC_DIR }}
+          exclude: |
+            index.php
