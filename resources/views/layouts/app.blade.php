@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $title ?? 'Admin Panel' }} - STAKAM</title>
-    <link rel="icon" type="image/png" href="picture/logo/STAKAM_Logo.png">
+    <link rel="icon" type="image/png" href="{{ asset('picture/logo/STAKAM_Logo.png') }}">
 
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,7 +18,7 @@
 </head>
 
 <body>
- 
+
     <nav class="sidebar-desktop d-none d-lg-flex flex-column solid-white-bg">
         <div>
             <div class="sidebar-brand d-flex align-items-center justify-content-center">
@@ -33,12 +33,14 @@
                 <li class="nav-item"><a class="nav-link {{ request()->routeIs('dashboard.programStudi') ? 'active' : '' }}" href="{{ route('dashboard.programStudi') }}"><i class="bi bi-mortarboard-fill"></i>Program Studi</a></li>
                 <li class="nav-item"><a class="nav-link {{ request()->routeIs('dashboard.pimpinan') ? 'active' : '' }}" href="{{ route('dashboard.pimpinan') }}"><i class="bi bi-person-workspace"></i>Pimpinan</a></li>
                 <li class="nav-item"><a class="nav-link {{ request()->routeIs('dashboard.testimoni') ? 'active' : '' }}" href="{{ route('dashboard.testimoni') }}"><i class="bi bi-chat-quote-fill"></i>Testimoni</a></li>
+                <li class="nav-item"><a class="nav-link {{ request()->routeIs('dashboard.berita.index') ? 'active' : '' }}" href="{{ route('dashboard.berita.index') }}"><i class="bi bi-newspaper"></i>Berita</a></li>
 
+                <li class="nav-item"><a class="nav-link {{ request()->routeIs('dashboard.pengumuman.index') ? 'active' : '' }}" href="{{ route('dashboard.pengumuman.index') }}"><i class="bi bi-megaphone-fill"></i>Pengumuman</a></li>
                 
                 <hr class="my-3 mx-3">
 
                 <li class="nav-item"><a class="nav-link {{ request()->routeIs('dashboard.pendaftar') ? 'active' : '' }}" href="{{ route('dashboard.pendaftar') }}"><i class="bi bi-card-checklist"></i>Pendaftar</a></li>
-               
+                
             </ul>
         </div>
     </nav>
@@ -57,17 +59,18 @@
                 <li class="nav-item"><a class="nav-link {{ request()->routeIs('dashboard.programStudi') ? 'active' : '' }}" href="{{ route('dashboard.programStudi') }}"><i class="bi bi-mortarboard-fill"></i>Program Studi</a></li>
                 <li class="nav-item"><a class="nav-link {{ request()->routeIs('dashboard.pimpinan') ? 'active' : '' }}" href="{{ route('dashboard.pimpinan') }}"><i class="bi bi-person-workspace"></i>Pimpinan</a></li>
                 <li class="nav-item"><a class="nav-link {{ request()->routeIs('dashboard.testimoni') ? 'active' : '' }}" href="{{ route('dashboard.testimoni') }}"><i class="bi bi-chat-quote-fill"></i>Testimoni</a></li>
+                <li class="nav-item"><a class="nav-link {{ request()->routeIs('dashboard.berita.index') ? 'active' : '' }}" href="{{ route('dashboard.berita.index') }}"><i class="bi bi-newspaper"></i>Berita</a></li>
 
-            
+                <li class="nav-item"><a class="nav-link {{ request()->routeIs('dashboard.pengumuman.index') ? 'active' : '' }}" href="{{ route('dashboard.pengumuman.index') }}"><i class="bi bi-megaphone-fill"></i>Pengumuman</a></li>
+
                 <hr class="my-2 mx-3">
 
                 <li class="nav-item"><a class="nav-link {{ request()->routeIs('dashboard.pendaftar') ? 'active' : '' }}" href="{{ route('dashboard.pendaftar') }}"><i class="bi bi-card-checklist"></i>Manajemen Pendaftar</a></li>
-              
+            
             </ul>
         </div>
     </div>
 
-    {{-- ... (Sisa kode tidak ada perubahan) ... --}}
     <div class="main-content-wrapper">
         <header class="top-navbar p-3 solid-white-bg">
             <div class="container-fluid d-flex align-items-center justify-content-between">
@@ -105,12 +108,12 @@
         </main>
     </div>
 
- 
+
     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
         @csrf
     </form>
 
-   
+    
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script> document.addEventListener("DOMContentLoaded",function(){const t=()=>localStorage.getItem("theme"),e=e=>localStorage.setItem("theme",e),o=()=>{const e=t();if(e)return e;return window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"},a=e=>{let t=e;"auto"===e&&(t=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"),document.documentElement.setAttribute("data-bs-theme",t)};const n=document.querySelector(".theme-slider"),r=document.querySelectorAll(".theme-btn"),s=document.getElementById("settingsDropdown");function i(e){if(!e)return;const t=e.getBoundingClientRect(),o=e.parentElement.getBoundingClientRect();n.style.width=`${t.width}px`,n.style.transform=`translateX(${t.left-o.left}px)`}function l(){const e=o();r.forEach(e=>e.classList.remove("active"));const t=document.querySelector(`.theme-btn[data-bs-theme-value="${e}"]`);t&&t.classList.add("active")}r.forEach(t=>{t.addEventListener("click",()=>{const o=t.getAttribute("data-bs-theme-value");e(o),a(o),l(),i(t)})}),s&&s.addEventListener("show.bs.dropdown",()=>{setTimeout(()=>{const e=document.querySelector(".theme-btn.active");i(e)},10)}),l(),window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>{if("auto"===t()){a("auto"),l()}})}); </script>

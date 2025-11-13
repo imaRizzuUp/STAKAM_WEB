@@ -3,7 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PengumumanController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -12,6 +14,10 @@ Route::post('/login-proses', [AuthController::class, 'authenticate'])->name('log
 
 Route::get('/pendaftaran', [HomeController::class, 'formPendaftaran'])->name('pendaftaran.form');
 Route::post('/pendaftaran', [HomeController::class, 'prosesPendaftaran'])->name('pendaftaran.proses');
+Route::get('/berita/{berita}', [HomeController::class, 'showBerita'])->name('berita.show');
+
+Route::get('/pengumuman/{pengumuman}', [HomeController::class, 'showPengumuman'])->name('pengumuman.show');
+Route::get('/panduan-wifi', [HomeController::class, 'panduanWifi'])->name('panduan.wifi');
 
 
 Route::middleware('auth')->group(function () {
@@ -42,10 +48,24 @@ Route::middleware('auth')->group(function () {
     Route::put('/dashboard/testimoni/{testimoni}', [DashboardController::class, 'updateTestimoni'])->name('dashboard.testimoni.update');
     Route::delete('/dashboard/testimoni/{testimoni}', [DashboardController::class, 'destroyTestimoni'])->name('dashboard.testimoni.destroy');
 
+    Route::get('/dashboard/berita', [BeritaController::class, 'index'])->name('dashboard.berita.index');
+    Route::get('/dashboard/berita/create', [BeritaController::class, 'create'])->name('dashboard.berita.create');
+    Route::post('/dashboard/berita', [BeritaController::class, 'store'])->name('dashboard.berita.store');
+    Route::get('/dashboard/berita/{berita}/edit', [BeritaController::class, 'edit'])->name('dashboard.berita.edit');
+    Route::put('/dashboard/berita/{berita}', [BeritaController::class, 'update'])->name('dashboard.berita.update');
+    Route::delete('/dashboard/berita/{berita}', [BeritaController::class, 'destroy'])->name('dashboard.berita.destroy');
+
     Route::get('/dashboard/pendaftar', [DashboardController::class, 'pendaftar'])->name('dashboard.pendaftar');
     Route::get('/dashboard/pendaftar/{pendaftar}', [DashboardController::class, 'detailPendaftar'])->name('dashboard.pendaftar.detail'); // Untuk detail AJAX
     Route::patch('/dashboard/pendaftar/{pendaftar}/status', [DashboardController::class, 'updateStatusPendaftar'])->name('dashboard.pendaftar.updateStatus');
     Route::delete('/dashboard/pendaftar/{pendaftar}', [DashboardController::class, 'destroyPendaftar'])->name('dashboard.pendaftar.destroy');
+
+    Route::get('/dashboard/pengumuman', [PengumumanController::class, 'index'])->name('dashboard.pengumuman.index');
+    Route::get('/dashboard/pengumuman/create', [PengumumanController::class, 'create'])->name('dashboard.pengumuman.create');
+    Route::post('/dashboard/pengumuman', [PengumumanController::class, 'store'])->name('dashboard.pengumuman.store');
+    Route::get('/dashboard/pengumuman/{pengumuman}/edit', [PengumumanController::class, 'edit'])->name('dashboard.pengumuman.edit');
+    Route::put('/dashboard/pengumuman/{pengumuman}', [PengumumanController::class, 'update'])->name('dashboard.pengumuman.update');
+    Route::delete('/dashboard/pengumuman/{pengumuman}', [PengumumanController::class, 'destroy'])->name('dashboard.pengumuman.destroy');
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
